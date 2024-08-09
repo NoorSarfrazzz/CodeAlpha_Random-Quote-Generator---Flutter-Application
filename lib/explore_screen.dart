@@ -6,6 +6,7 @@ import 'favourite_screen.dart';
 import 'modal.dart';
 import 'repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,22 +16,81 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //enum SocialMedia {};
+
   final QuoteRepository repository = QuoteRepository();
   late Future<List<QuoteModel>> futureQuotes;
   String category = 'age';
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final List<String> categories = [
-    'age', 'alone', 'amazing', 'anger', 'architecture', 'art', 'attitude',
-    'beauty', 'best', 'birthday', 'business', 'car', 'change', 'communication',
-    'computers', 'cool', 'courage', 'dad', 'dating', 'death', 'design', 'dreams',
-    'education', 'environmental', 'equality', 'experience', 'failure', 'faith',
-    'family', 'famous', 'fear', 'fitness', 'food', 'forgiveness', 'freedom',
-    'friendship', 'funny', 'future', 'god', 'good', 'government', 'graduation',
-    'great', 'happiness', 'health', 'history', 'home', 'hope', 'humor',
-    'imagination', 'inspirational', 'intelligence', 'jealousy', 'knowledge',
-    'leadership', 'learning', 'legal', 'life', 'love', 'marriage', 'medical',
-    'men', 'mom', 'money', 'morning', 'movies', 'success'
+    'age',
+    'alone',
+    'amazing',
+    'anger',
+    'architecture',
+    'art',
+    'attitude',
+    'beauty',
+    'best',
+    'birthday',
+    'business',
+    'car',
+    'change',
+    'communication',
+    'computers',
+    'cool',
+    'courage',
+    'dad',
+    'dating',
+    'death',
+    'design',
+    'dreams',
+    'education',
+    'environmental',
+    'equality',
+    'experience',
+    'failure',
+    'faith',
+    'family',
+    'famous',
+    'fear',
+    'fitness',
+    'food',
+    'forgiveness',
+    'freedom',
+    'friendship',
+    'funny',
+    'future',
+    'god',
+    'good',
+    'government',
+    'graduation',
+    'great',
+    'happiness',
+    'health',
+    'history',
+    'home',
+    'hope',
+    'humor',
+    'imagination',
+    'inspirational',
+    'intelligence',
+    'jealousy',
+    'knowledge',
+    'leadership',
+    'learning',
+    'legal',
+    'life',
+    'love',
+    'marriage',
+    'medical',
+    'men',
+    'mom',
+    'money',
+    'morning',
+    'movies',
+    'success'
   ];
 
   int pageNumber = 1;
@@ -49,10 +109,12 @@ class _HomePageState extends State<HomePage> {
     });
 
     try {
-      List<QuoteModel> newQuotes = await repository.getQuotesByCategory(category: category);
+      List<QuoteModel> newQuotes =
+          await repository.getQuotesByCategory(category: category);
       setState(() {
         if (pageNumber == 1) {
-          quotes = newQuotes; // Replace quotes on initial load or category change
+          quotes =
+              newQuotes; // Replace quotes on initial load or category change
         } else {
           quotes.addAll(newQuotes); // Append quotes on subsequent loads
         }
@@ -84,7 +146,8 @@ class _HomePageState extends State<HomePage> {
 
     try {
       pageNumber++;
-      List<QuoteModel> moreQuotes = await repository.getQuotesByCategory(category: category);
+      List<QuoteModel> moreQuotes =
+          await repository.getQuotesByCategory(category: category);
       setState(() {
         quotes.addAll(moreQuotes);
         isLoadingMore = false;
@@ -99,7 +162,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     final provider = Provider.of<FavoriteProvider>(context);
 
     void _copy(String text) {
@@ -190,16 +252,21 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: categories[index] == category ? Colors.yellow.shade500 : Colors.white,
+                            color: categories[index] == category
+                                ? Colors.yellow.shade500
+                                : Colors.white,
                             width: 2,
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0),
                           child: Center(
                             child: Text(
                               categories[index].toUpperCase(),
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),
@@ -232,29 +299,50 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             quotes[index].quote,
-                            style: const TextStyle(fontSize: 16, color: Colors.white),
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.white),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             '- ${quotes[index].author}',
-                            style: const TextStyle(fontSize: 14, color: Colors.grey),
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.grey),
                           ),
                           const SizedBox(height: 8),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               IconButton(
-                                icon: const Icon(FontAwesomeIcons.copy, color: Colors.white, size: 20,),
+                                icon: const Icon(
+                                  FontAwesomeIcons.copy,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
                                 onPressed: () {
                                   _copy(quotes[index].quote);
                                 },
                               ),
                               IconButton(
                                 icon: provider.isExist(quotes[index])
-                                    ? const Icon(Icons.favorite, color: Colors.yellow)
-                                    : const Icon(Icons.favorite_outline, color: Colors.yellow),
+                                    ? const Icon(Icons.favorite,
+                                        color: Colors.yellow)
+                                    : const Icon(Icons.favorite_outline,
+                                        color: Colors.yellow),
                                 onPressed: () {
                                   provider.toggleFavorites(quotes[index]);
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  FontAwesomeIcons.share,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                onPressed: () async {
+                                  //_showModalBottomSheet();
+                                  if (quotes[index].quote.isNotEmpty) {
+                                    await Share.share(quotes[index].quote);
+                                  }
                                 },
                               ),
                             ],
@@ -268,7 +356,9 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
             if (isLoadingMore)
-              const CircularProgressIndicator(color: Colors.white,),
+              const CircularProgressIndicator(
+                color: Colors.white,
+              ),
           ],
         ),
       ),
@@ -277,7 +367,8 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.yellow,
         child: const Icon(FontAwesomeIcons.syncAlt, color: Colors.black),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
     );
   }
 }
